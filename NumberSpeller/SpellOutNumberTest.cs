@@ -30,6 +30,22 @@ namespace SpellOutNumber
             Assert.AreEqual(number.ToText(), numberText);
         }
 
+        [TestCase(24, "twenty four")]
+        [TestCase(37, "thirty seven")]
+        [TestCase(99, "ninety nine")]
+        public void SimpleCombinationTest(int number, string numberText)
+        {
+            Assert.AreEqual(number.ToText(), numberText);
+        }
+
+        [TestCase(100, "one hundred")]
+        [TestCase(200, "two hundred")]
+        [TestCase(900, "nine hundred")]
+        public void HundredsTest(int number, string numberText)
+        {
+            Assert.AreEqual(number.ToText(), numberText);
+        }
+
         [Test]
         public void ZeroTest()
         {
