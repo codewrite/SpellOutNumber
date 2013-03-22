@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-namespace SpellOutNumber
+namespace NumberSpeller
 {
     [TestFixture]
     class SpellOutNumberTest
@@ -42,6 +42,17 @@ namespace SpellOutNumber
         [TestCase(200, "two hundred")]
         [TestCase(900, "nine hundred")]
         public void HundredsTest(int number, string numberText)
+        {
+            Assert.AreEqual(number.ToText(), numberText);
+        }
+
+        [TestCase(310, "three hundred and ten")]
+        [TestCase(2001, "two thousand and one")]
+        [TestCase(3012, "three thousand and twelve")]
+        [TestCase(3599, "three thousand, five hundred and ninety nine")]
+        [TestCase(1501, "one thousand, five hundred and one")]
+        [TestCase(12609, "twelve thousand, six hundred and nine")]
+        public void ThousandsTest(int number, string numberText)
         {
             Assert.AreEqual(number.ToText(), numberText);
         }
