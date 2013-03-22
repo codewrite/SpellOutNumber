@@ -40,3 +40,5 @@ Then tests for millions, then billions - somewhere here the code would need to b
 Conclusions (so far)
 1. This problem was a lot more complicated than I thought it would be to start with.
 2. The tests seem very simple though (I guess that's a good thing).
+3. The code currently passes all the tests, and I know I can't add new functionality because of this. It doesn't particularly feel like it needs refactoring. But I know the code as it is won't work for all numbers - so it's a bit of a strange feeling knowing that I can't change it, even though I know it's not "fully working".
+4. How much logic should be in the tests? At the moment there is none, but spelling out every test could mean that we end up with lots and lots of tests. Is this right?
