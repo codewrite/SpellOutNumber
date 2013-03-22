@@ -17,7 +17,7 @@ namespace NumberSpeller
         [TestCase(11, "eleven")]
         [TestCase(15, "fifteen")]
         [TestCase(19, "nineteen")]
-        public void SimpleNumberTest(int number, string numberText)
+        public void SimpleNumberTest(long number, string numberText)
         {
             Assert.AreEqual(number.ToText(), numberText);
         }
@@ -25,7 +25,7 @@ namespace NumberSpeller
         [TestCase(20, "twenty")]
         [TestCase(30, "thirty")]
         [TestCase(90, "ninety")]
-        public void TensNumberTest(int number, string numberText)
+        public void TensNumberTest(long number, string numberText)
         {
             Assert.AreEqual(number.ToText(), numberText);
         }
@@ -33,7 +33,7 @@ namespace NumberSpeller
         [TestCase(24, "twenty four")]
         [TestCase(37, "thirty seven")]
         [TestCase(99, "ninety nine")]
-        public void SimpleCombinationTest(int number, string numberText)
+        public void SimpleCombinationTest(long number, string numberText)
         {
             Assert.AreEqual(number.ToText(), numberText);
         }
@@ -41,7 +41,7 @@ namespace NumberSpeller
         [TestCase(100, "one hundred")]
         [TestCase(200, "two hundred")]
         [TestCase(900, "nine hundred")]
-        public void HundredsTest(int number, string numberText)
+        public void HundredsTest(long number, string numberText)
         {
             Assert.AreEqual(number.ToText(), numberText);
         }
@@ -52,7 +52,34 @@ namespace NumberSpeller
         [TestCase(3599, "three thousand, five hundred and ninety nine")]
         [TestCase(1501, "one thousand, five hundred and one")]
         [TestCase(12609, "twelve thousand, six hundred and nine")]
-        public void ThousandsTest(int number, string numberText)
+        [TestCase(512607, "five hundred and twelve thousand, six hundred and seven")]
+        [TestCase(900001, "nine hundred thousand and one")]
+        [TestCase(999999, "nine hundred and ninety nine thousand, nine hundred and ninety nine")]
+        public void ThousandsTest(long number, string numberText)
+        {
+            Assert.AreEqual(number.ToText(), numberText);
+        }
+
+        [TestCase(27000003, "twenty seven million and three")]
+        [TestCase(13001005, "thirteen million, one thousand and five")]
+        [TestCase(43112603, "forty three million, one hundred and twelve thousand, six hundred and three")]
+        [TestCase(999999999, "nine hundred and ninety nine million, nine hundred and ninety nine thousand, nine hundred and ninety nine")]
+        public void MillionsTest(long number, string numberText)
+        {
+            Assert.AreEqual(number.ToText(), numberText);
+        }
+
+        [TestCase(123043112603, "one hundred and twenty three billion, forty three million, one hundred and twelve thousand, six hundred and three")]
+        public void BilionsTest(long number, string numberText)
+        {
+            Assert.AreEqual(number.ToText(), numberText);
+        }
+
+        [TestCase((long)9E18, "nine quintillion")]
+        [TestCase((long)(4E17 + 17E6), "four hundred quadrillion, seventeen million")]
+        [TestCase(long.MaxValue, "nine quintillion, two hundred and twenty three quadrillion, three hundred and seventy two trillion, thirty six" +
+                               " billion, eight hundred and fifty four million, seven hundred and seventy five thousand, eight hundred and seven")]
+        public void ReallyBigNumberTest(long number, string numberText)
         {
             Assert.AreEqual(number.ToText(), numberText);
         }
@@ -60,14 +87,14 @@ namespace NumberSpeller
         [Test]
         public void ZeroTest()
         {
-            int zero = 0;
+            long zero = 0;
             Assert.AreEqual(zero.ToText(), "zero");
         }
 
         [TestCase(-1)]
         [TestCase(-15)]
         [ExpectedException(typeof(NotSupportedException))]
-        public void NegativeTest(int number)
+        public void NegativeTest(long number)
         {
             number.ToText();
         }

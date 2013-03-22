@@ -7,7 +7,7 @@ namespace NumberSpeller
 {
     public static class Int32Extender
     {
-        public static string ToText(this int number)
+        public static string ToText(this long number)
         {
             NumberString numStr = new NumberString(number);
             return numStr.Text;

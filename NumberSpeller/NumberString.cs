@@ -7,20 +7,21 @@ namespace NumberSpeller
 {
     public class NumberString
     {
-        private static string[] _digits = new string[19] { "one","two","three","four","five","six","seven","eight","nine","ten",
-                                                           "eleven","twelve","thirteen", "fourteen", "fifteen",
-                                                           "sixteen", "seventeen", "eighteen", "nineteen" };
+        private static readonly string[] _digits = new string[] { "one","two","three","four","five","six","seven","eight","nine","ten",
+                                                                  "eleven","twelve","thirteen", "fourteen", "fifteen",
+                                                                  "sixteen", "seventeen", "eighteen", "nineteen" };
 
-        private static string[] _tens = new string[9] { "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
+        private static readonly string[] _tens = new string[] { "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
 
         private const string _aHundred = "hundred";
-        private const string _aThousand = "thousand";
+
+        private static readonly string[] _largeNames = new string[] { "thousand", "million", "billion", "trillion", "quadrillion", "quintillion" };
 
         private StringBuilder numberText;
 
         public string Text { get { return numberText.ToString(); } }
 
-        public NumberString(int number)
+        public NumberString(long number)
         {
             if (number < 0)
                 throw new NotSupportedException("Number Must be Positive");
@@ -30,31 +31,38 @@ namespace NumberSpeller
             if (number == 0)
                 numberText.Append("zero");
 
-            number = AppendThousands(number);
-
+            number = AppendLargeNumbers(number);
             number = AppendHundreds(number);
-
-            number = AppendTo20(number);
+            AppendTo100(number);
         }
 
-        private int AppendTo20(int number)
+        private long AppendLargeNumbers(long number)
         {
-            if (number > 0)
+            int i = _largeNames.Length - 1;
+            long multiplier = 1;
+            for (int j = 0; j <= i; j++)
+                multiplier *= 1000;
+            while (i >= 0)
             {
-                if (number >= 20)
+                if (number >= multiplier)
                 {
-                    numberText.Append(_tens[number / 10 - 1]);
-                    number %= 10;
-                    if (number > 0)
-                        numberText.Append(" ");
+                    long newNum = AppendHundreds(number / multiplier);
+                    AppendTo100(newNum);
+                    numberText.Append(" ");
+                    numberText.Append(_largeNames[i]);
+                    number %= multiplier;
+                    if (number >= 100)
+                        numberText.Append(", ");
+                    else if (number > 0)
+                        numberText.Append(" and ");
                 }
-                if (number > 0)
-                    numberText.Append(_digits[number - 1]);
+                i--;
+                multiplier /= 1000;
             }
             return number;
         }
 
-        private int AppendHundreds(int number)
+        private long AppendHundreds(long number)
         {
             if (number >= 100)
             {
@@ -68,20 +76,20 @@ namespace NumberSpeller
             return number;
         }
 
-        private int AppendThousands(int number)
+        private void AppendTo100(long number)
         {
-            if (number >= 1000)
+            if (number > 0)
             {
-                numberText.Append(_digits[number / 1000 - 1] + " ");
-                numberText.Append(_aThousand);
-                number %= 1000;
-                if (number >= 100)
-                    numberText.Append(", ");
-                else if (number > 0)
-                    numberText.Append(" and ");
+                if (number >= 20)
+                {
+                    numberText.Append(_tens[number / 10 - 2]);
+                    number %= 10;
+                    if (number > 0)
+                        numberText.Append(" ");
+                }
+                if (number > 0)
+                    numberText.Append(_digits[number - 1]);
             }
-
-            return number;
         }
     }
 }
